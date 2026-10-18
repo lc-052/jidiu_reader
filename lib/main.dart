@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jidiu_reader/app/app_theme.dart';
+import 'package:jidiu_reader/app/theme_controller.dart';
 void main() =>runApp(MainApp());
 class MainApp extends StatefulWidget {
 
@@ -10,56 +12,79 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   int _selectedIndex = 0;
+  final ThemeController _themeController = ThemeController();
   final List<Map<String, dynamic>> items = [
     {'label': '书架','icon': 'lib/assets/bookshelf-normal.png','activeIcon': 'lib/assets/bookshelf-active.png'},
     {'label': '发现', 'icon': 'lib/assets/discover-normal.png', 'activeIcon': 'lib/assets/discover-active.png'},
     {'label': '我的', 'icon': 'lib/assets/profile-normal.png', 'activeIcon': 'lib/assets/profile-active.png' },
   ];
-
+  void dispose() {
+    _themeController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: IndexedStack(index: _selectedIndex,
-          children: [
-            Text('Bookshelf'),
-            Text('Discover'),
-            Text('Profile'),
-          ],
-        ),
-        bottomNavigationBar: Container(
+    return ListenableBuilder(listenable: _themeController, builder: (context,child){
+      return MaterialApp(
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: _themeController.themeMode,
 
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          height: 80,
-          width: double.infinity,
-          child:
-          Row(
-              children: List.generate(items.length, (index) {
-                return Expanded(child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                    child: Column(
-                      children: [
-                        _selectedIndex == index ?  Image.asset(items[index]['activeIcon'], width: 30, height: 30,) : Image.asset(items[index]['icon'], width: 24, height: 24,),
-                        Text(items[index]['label'],style: TextStyle(color: Colors.black),)
-                      ],
-                    )
-                ),
-                );
-              })
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('寄丢阅读'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings_outlined),
+                onPressed: () {
+
+                },
+              ),
+            ],
+
           ),
+          body: IndexedStack(index: _selectedIndex,
+            children: [
+              Text('Bookshelf'),
+              Text('Discover'),
+              Text('Profile'),
+            ],
+          ),
+          bottomNavigationBar: Container(
 
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
+            height: 80,
+            width: double.infinity,
+            child:
+            Row(
+                children: List.generate(items.length, (index) {
+                  return Expanded(child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          _selectedIndex == index ?  Image.asset(items[index]['activeIcon'], width: 30, height: 30,) : Image.asset(items[index]['icon'], width: 24, height: 24,),
+                          Text(items[index]['label'])
+                        ],
+                      )
+                  ),
+                  );
+                })
+            ),
+
+          ),
         ),
-      ),
-      
-    );
+
+      );
+    });
   }
 }
+
 
 
