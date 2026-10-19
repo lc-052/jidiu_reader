@@ -11,25 +11,57 @@ class Assets {
 class $AssetsAssetsGen {
   const $AssetsAssetsGen();
 
+  final $AssetsBookimagesGen bookimages = const $AssetsBookimagesGen();
   final AssetGenImage bookshelfActive = const AssetGenImage(
-      'lib/assets/bookshelf-active.png');
+    'lib/assets/bookshelf-active.png',
+  );
   final AssetGenImage bookshelfNormal = const AssetGenImage(
-      'lib/assets/bookshelf-normal.png');
+    'lib/assets/bookshelf-normal.png',
+  );
   final AssetGenImage discoverActive = const AssetGenImage(
-      'lib/assets/discover-active.png');
+    'lib/assets/discover-active.png',
+  );
   final AssetGenImage discoverNormal = const AssetGenImage(
-      'lib/assets/discover-normal.png');
+    'lib/assets/discover-normal.png',
+  );
   final AssetGenImage profileActive = const AssetGenImage(
-      'lib/assets/profile-active.png');
+    'lib/assets/profile-active.png',
+  );
   final AssetGenImage profileNormal = const AssetGenImage(
-      'lib/assets/profile-normal.png');
+    'lib/assets/profile-normal.png',
+  );
+}
+
+class $AssetsBookimagesGen {
+  const $AssetsBookimagesGen();
+
+  final AssetGenImage diuParadise = const AssetGenImage(
+    'lib/assets/bookimages/Diu_Paradise.png',
+  );
+  final AssetGenImage howJidiuWasTempered = const AssetGenImage(
+    'lib/assets/bookimages/How_Jidiu_Was_Tempered.png',
+  );
+  final AssetGenImage jidiuOfTheBreath = const AssetGenImage(
+    'lib/assets/bookimages/Jidiu_of_the_Breath.png',
+  );
+  final AssetGenImage theBiographyOfJidiu = const AssetGenImage(
+    'lib/assets/bookimages/The_Biography_of_Jidiu.png',
+  );
+  final AssetGenImage theGreatUnJidiu = const AssetGenImage(
+    'lib/assets/bookimages/The_Great_Un-Jidiu.png',
+  );
+  final AssetGenImage theJidiuRailwayExpress = const AssetGenImage(
+    'lib/assets/bookimages/The_Jidiu_Railway_Express.png',
+  );
+  final AssetGenImage theWayOfJidiu = const AssetGenImage(
+    'lib/assets/bookimages/The_Way_of_Jidiu.png',
+  );
 }
 
 class AssetGenImage {
   const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
-
 
   final Size? size;
   final Set<String> flavors;
@@ -87,15 +119,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   Widget custom({
@@ -112,4 +137,3 @@ class AssetGenImage {
 
   String get keyName => _assetName;
 }
-

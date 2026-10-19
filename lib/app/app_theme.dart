@@ -4,6 +4,7 @@ import 'app_colors.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
+      fontFamily: 'NotoSansSC',
       appBarTheme: AppBarThemeData(
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.textPrimary,
@@ -26,6 +27,8 @@ class AppTheme {
   }
   static ThemeData get darkTheme {
     return ThemeData(
+      fontFamily: 'NotoSansSC',
+
       appBarTheme: AppBarThemeData(
         backgroundColor: AppColors.darkBackground,
         foregroundColor: AppColors.darkText,

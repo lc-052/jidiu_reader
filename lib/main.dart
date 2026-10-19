@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jidiu_reader/app/app_theme.dart';
 import 'package:jidiu_reader/app/theme_controller.dart';
+import 'package:jidiu_reader/features/bookshelf/bookshelf_page.dart';
+import 'package:jidiu_reader/features/discover/discover_page.dart';
+import 'package:jidiu_reader/features/profile/profile_page.dart';
+import 'package:jidiu_reader/features/settings/setting_page.dart';
 void main() =>runApp(MainApp());
 class MainApp extends StatefulWidget {
 
@@ -27,6 +31,10 @@ class _MainAppState extends State<MainApp> {
 
     return ListenableBuilder(listenable: _themeController, builder: (context,child){
       return MaterialApp(
+
+        routes: {
+          '/settings': (context) => SettingPage(controller: _themeController),
+        },
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: _themeController.themeMode,
@@ -36,20 +44,15 @@ class _MainAppState extends State<MainApp> {
           appBar: AppBar(
             title: Text('寄丢阅读'),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.settings_outlined),
-                onPressed: () {
-
-                },
-              ),
+              GetSetting(),
             ],
 
           ),
           body: IndexedStack(index: _selectedIndex,
             children: [
-              Text('Bookshelf'),
-              Text('Discover'),
-              Text('Profile'),
+              BookshelfPage(),
+              DiscoverPage(),
+              ProfilePage(),
             ],
           ),
           bottomNavigationBar: Container(
@@ -81,10 +84,25 @@ class _MainAppState extends State<MainApp> {
           ),
         ),
 
+
       );
     });
   }
 }
+class GetSetting extends StatelessWidget {
+  const GetSetting({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.settings_outlined),
+      onPressed: () {
+        Navigator.pushNamed(context, '/settings');
+      },
+    );
+  }
+}
+
 
 
 
