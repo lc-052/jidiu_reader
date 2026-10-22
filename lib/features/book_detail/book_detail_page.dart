@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:jidiu_reader/app/app_colors.dart';
 import 'package:jidiu_reader/app/app_theme.dart';
+import 'package:jidiu_reader/data/source_repository.dart';
 import 'package:jidiu_reader/features/book_detail/read_page.dart';
+import 'package:jidiu_reader/models/book.dart';
+import 'package:jidiu_reader/models/chapter.dart';
+import 'package:jidiu_reader/parsers/faloo_parser.dart';
 class BookDetailPage extends StatefulWidget {
-  List<Map<String, dynamic>> bookData = [];
-  int index = 0;
-  BookDetailPage({required this.bookData, required this.index, super.key}) ;
+  Book bookData ;
+
+  BookDetailPage({required this.bookData, super.key}) ;
 
   @override
   State<BookDetailPage> createState() => _BookDetailPageState();
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
-  List<Map<String, dynamic>> chapters = [
-    {
-      'title': '第一章 初入寄丢世界',
-      'content': '这是第一章的正文。主角站在山崖边，望着远处的群山，开始了自己的旅程……',
-    },
-    {
-      'title': '第二章 奇妙的旅程',
-      'content': '第二天清晨，主角收拾好行囊，踏上了新的旅途……',
-    },
-    {
-      'title': '第三章 遇见伙伴',
-      'content': '走过一片森林后，主角遇见了一位神秘的伙伴……',
-    },
-  ];
+  List<Chapter> chapters = [];
+  Future<void> getChapterList() async {
+    final parser = FalooParser();
+    final chapterHtml = await SourceRepository().fetchBookHtml('https://wap.faloo.com/booklist_${widget.bookData.id}.html');
+    final chapterList = parser.parseChapterInfo(chapterHtml);
+    setState(() {
+      chapters = chapterList;
+    });
+  }
+  @override
+  void initState() {
+    getChapterList();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,15 +47,15 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        widget.bookData[widget.index]['cover'],
+                      child: Image.network(
+                        widget.bookData.img??'',
                         width: 160,
                         height: 240,
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Text(widget.bookData[widget.index]['title'], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-                    Text("作者：${widget.bookData[widget.index]['author']}", style: TextStyle(fontSize: 16),),
+                    Text(widget.bookData.title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                    Text("作者：${widget.bookData.author}", style: TextStyle(fontSize: 16),),
                   ],
                 ),
               ),
@@ -64,7 +68,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('作品简介', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                  Text(widget.bookData[widget.index]['description'], style: TextStyle(fontSize: 14),),
+                  Text(widget.bookData.id, style: TextStyle(fontSize: 14),),
                 ],
               ),
             )
@@ -96,7 +100,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('章节目录', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                  Text('共100章', style: TextStyle(fontSize: 16),),
+                  Text('共${chapters.length}章', style: TextStyle(fontSize: 16),),
                 ],
               ),
             ),
@@ -109,7 +113,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ReadPage(chapterList: chapters, chapterIndex: index)));
                   },
                   child: ListTile(
-                    title: Text(chapters[index]['title']),
+                    title: Text(chapters[index].title),
                   ),
                 );
               },

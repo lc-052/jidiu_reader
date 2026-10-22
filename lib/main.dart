@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jidiu_reader/app/app_theme.dart';
 import 'package:jidiu_reader/app/theme_controller.dart';
 import 'package:jidiu_reader/features/bookshelf/bookshelf_page.dart';
+import 'package:jidiu_reader/features/discover/book_source_detail/faloo_free.dart';
 import 'package:jidiu_reader/features/discover/discover_page.dart';
 import 'package:jidiu_reader/features/profile/profile_page.dart';
 import 'package:jidiu_reader/features/settings/setting_page.dart';
@@ -34,6 +35,7 @@ class _MainAppState extends State<MainApp> {
 
         routes: {
           '/settings': (context) => SettingPage(controller: _themeController),
+          '/faloo': (context) => FalooFree(),
         },
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.6.0
   html: ^0.15.7
+  fast_gbk: ^1.0.0
+  dio: ^5.11.1
 
 dev_dependencies:
   flutter_test:
